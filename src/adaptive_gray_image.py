@@ -1,3 +1,4 @@
+import cv2
 import numpy as np
 
 from src.gradient import Gradient, dx, dy
@@ -26,7 +27,6 @@ class AdaptiveGrayscaleImage(LabImage):
                         max_err = abs(err)
 
                     s = err * self.w * .25
-                    # print(f"{err} * {self.w} = {s}")
 
                     self.grad[x][y][dx] = -s + self.grad[x][y][dx]
                     self.grad[x + 1][y][dy] = -s + self.grad[x + 1][y][dy]
@@ -52,5 +52,8 @@ class AdaptiveGrayscaleImage(LabImage):
 
             for x in range(2, h):
                 out[x][y] = out[x - 1][y] + self.grad[x - 1][y][dx]
+
+        out = out + np.abs(np.min(out))
+        cv2.normalize(out, out, 0, 255, cv2.NORM_MINMAX)
 
         return out

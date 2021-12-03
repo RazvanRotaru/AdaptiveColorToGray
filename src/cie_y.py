@@ -2,7 +2,6 @@ import numpy as np
 
 
 class CIEY:
-    # def __init__(self, image):
     R = 0
     G = 1
     B = 2
